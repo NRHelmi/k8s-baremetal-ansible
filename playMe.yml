@@ -1,0 +1,29 @@
+- hosts: master, slave
+  tasks: 
+    
+    - name: Installing Docker engine.
+      become: true
+      shell: curl -sSL https://get.docker.com | sh
+
+    - name: Installing Apt_Transport_https.
+      become: true
+      apt: name=apt-transport-https state=present
+
+    - name: Adding kubernetes repository.
+      become: true
+      shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+    - name: Adding kubernetes repository.
+      become: true
+      shell: echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+
+    - name: Installing Kubectl, kubeadmin, kubernetes-cni.
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - kubectl
+        - kubeadm
+        - kubernetes-cni
