@@ -7,6 +7,6 @@ Run: ansible-playbook playMe.yml
 [host]
 ip_address ansible_ssh_user=username
 
-##i Make sure you have ssh access to your hosts
+## Make sure you have ssh access to your hosts
 
 ssh-copy-id username@hostname
