@@ -1,6 +1,6 @@
 # kubernetes_bare_metal_deployer
 Kubernetes_bare_metal_deployer is a solution to auto deploy a ready-cluster kuberenetes production environment based on containers technology using Ansible as a provisioning engine.<br/>
-* Start by specifying your hosts by editing this file:
+* Start by editing this file to specify your hosts:
 ```
 /etc/ansible/hosts
 ```
