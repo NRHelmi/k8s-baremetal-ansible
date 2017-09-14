@@ -8,12 +8,12 @@ Kubernetes_bare_metal_deployer is a solution to auto deploy a ready-cluster kube
 [host]
 ip_address ansible_ssh_user=username
 ```
-* After cloning the project run:
-```
-ansible-playbook playMe.yml
-```
 * Ensure ssh public key access to your hosts
 ```
 ssh-copy-id username@hostname
+```
+* After cloning the project run:
+```
+ansible-playbook playMe.yml
 ```
 enjoy :D
