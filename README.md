@@ -10,7 +10,7 @@ ip_address ansible_ssh_user=username
 ```
 * After cloning the project run:
 ```
-Run: ansible-playbook playMe.yml
+ansible-playbook playMe.yml
 ```
 * Ensure ssh public key access to your hosts
 ```
