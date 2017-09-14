@@ -12,7 +12,7 @@ ip_address ansible_ssh_user=username
 ```
 Run: ansible-playbook playMe.yml
 ```
-Ensure ssh public key access to your hosts
+* Ensure ssh public key access to your hosts
 ```
 ssh-copy-id username@hostname
 ```
