@@ -1,0 +1,3 @@
+- name: Installing Docker Engine.
+  become: true
+  shell: curl -sSL https://get.docker.com | sh

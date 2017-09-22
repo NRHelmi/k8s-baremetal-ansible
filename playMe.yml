@@ -1,49 +1,8 @@
-- hosts: master, slave
-  tasks: 
-    
-    - name: Installing Docker Engine.
-      become: true
-      shell: curl -sSL https://get.docker.com | sh
+- hosts: Master, Node1, Node2
+  roles:
+    - role: docker_setup
+    - role: kubernetes_setup
 
-    - name: Installing Apt_Transport_https.
-      become: true
-      apt: name=apt-transport-https state=present
-
-    - name: Adding kubernetes repository.
-      become: true
-      shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-
-    - name: Adding kubernetes repository.
-      become: true
-      shell: echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
-
-    - name: Installing Kubectl, kubeadmin, kubernetes-cni.
-      become: true
-      apt:
-        name: "{{ item }}"
-        state: present
-        update_cache: yes
-      with_items:
-        - kubectl
-        - kubeadm
-        - kubernetes-cni
-
-- hosts: master
-  tasks:
-
-    - name: Kubeadmin intializing master (This will take some time).
-      become: true
-      become_user: root
-      shell: kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=$(hostname -I | cut -d ' ' -f 2) --skip-preflight-checks --kubernetes-version stable-1.6 > init.log
-
-    - name: Configuring Environments variables.
-      become: true
-      become_user: ubuntu
-      shell: mkdir -p $HOME/.kubeconfig && sudo cp /etc/kubernetes/admin.conf $HOME/.kubeconfig/ && sudo chown $(id -u):$(id -g) $HOME/.kubeconfig/admin.conf && export KUBECONFIG=$HOME/.kubeconfig/admin.conf && echo "export KUBECONFIG=$HOME/.kubeconfig/admin.conf" | tee -a ~/.bashrc
-
-    - name: Applying Pods network (flannel).
-      become_user: ubuntu
-      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml && kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-      environment:
-        KUBECONFIG: /home/ubuntu/.kubeconfig/admin.conf
-      ignore_errors: yes
+- hosts: Master
+  roles:
+    - role: kubernetes_init_master
